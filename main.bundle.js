@@ -178,7 +178,7 @@ module.exports = "\r\nheader {\r\n    position: relative;\r\n}\r\n\r\nheader img
 /***/ "./src/app/country/countries/countries.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<app-loading-screen *ngIf=\"searching\"></app-loading-screen>\n\n<div class=\"d-flex flex-column\">\n\n  <header class=\"d-flex flex-column\">\n\n    <img src=\"assets/images/{{coverImage}}.jpg\" *ngIf=\"coverImage\">\n    <div class=\"title d-flex align-items-center justify-content-center\">\n      <div *ngIf=\"type === 'region'\">{{ value }}</div>\n      <div *ngIf=\"type === 'currency'\">Currency: {{ value }}</div>\n      <div *ngIf=\"type === 'lang'\">Language: {{ value  }}</div>\n    </div>\n\n    <!-- Filtering Textboxes -->\n    <div class=\"filters d-flex flex-column flex-md-row justify-content-around px-3 py-2 w-100\">\n      <input type=\"text\" class=\"textbox\" [class.active]=\"nameFilter\" placeholder=\"Search Name\" [(ngModel)]=\"nameFilter\">\n      <input type=\"text\" class=\"textbox\" [class.active]=\"langFilter\" placeholder=\"Search Language\" [(ngModel)]=\"langFilter\">\n      <input type=\"text\" class=\"textbox\" [class.active]=\"currencyFilter\" placeholder=\"Search Currency\" [(ngModel)]=\"currencyFilter\">\n    </div>\n\n  </header>\n\n  <div class=\"container-fluid pt-3 list-container\">\n\n    <!-- Number of Countries found -->\n    <div class=\"text-center text-muted\" *ngIf=\"!searching && !nameFilter && !langFilter && !currencyFilter\">\n      {{ list.length }} countr{{ list.length > 1 ? 'ies' : 'y' }} found.\n    </div>\n\n    <!-- Country List -->\n    <div class=\"row\">\n      <div class=\"col-12 col-sm-6 col-md-4 col-lg-3\" *ngFor=\"let country of list | nameFilter: nameFilter | langFilter: langFilter | currencyFilter: currencyFilter | paginate: { itemsPerPage: 12, currentPage: pageNumber }\">\n        <div class=\"card mx-auto my-3 shadow border-0\" [@cardAnim]=\"cardState\">\n          <img src=\"{{ country.flag }}\" alt=\"{{ country.name }}\" class=\"card-img-top\">\n          <div class=\"card-body\">\n            <div class=\"card-title\" [innerHtml]=\"country.name | makeBolder: nameFilter\"></div>\n            <div class=\"card-text\">\n              <div class=\"pair\" *ngIf=\"type !== 'region'\">\n                <div class=\"key\">Region</div>\n                <div class=\"value\">{{ country.region }}</div>\n              </div>\n              <div class=\"pair\" *ngIf=\"country.capital\">\n                <div class=\"key\">Capital</div>\n                <div class=\"value\">{{ country.capital }}</div>\n              </div>\n              <div class=\"pair\" *ngIf=\"country.subregion\">\n                <div class=\"key\">Subregion</div>\n                <div class=\"value\">{{ country.subregion }}</div>\n              </div>\n              <div class=\"pair\">\n                <div class=\"key\">Timezone{{ country.timezones.length > 1 ? 's' : '' }}</div>\n                <div class=\"value\">{{ country.timezones.join(', ') }}</div>\n              </div>\n              <div class=\"pair\">\n                <div class=\"key\">Currenc{{ country.currencies.length > 1 ? 'ies' : 'y' }}</div>\n                <div class=\"value\">\n                  <span *ngFor=\"let currency of country.currencies; let last = last\"><a routerLink=\"/countries/currency/{{currency.code}}\" class=\"card-link\" [innerHtml]=\"currency.name | makeBolder: currencyFilter\"></a>{{ last ? '' : ', ' }}</span>\n                </div>\n              </div>\n              <div class=\"pair\">\n                <div class=\"key\">Language{{ country.languages.length > 1 ? 's' : '' }}</div>\n                <div class=\"value\">\n                  <span *ngFor=\"let language of country.languages; let last = last\"><a routerLink=\"/countries/lang/{{language.code}}\" class=\"card-link\" [innerHtml]=\"language.name | makeBolder: langFilter\"></a>{{ last ? '' : ', ' }}</span>\n                </div>\n              </div>\n            </div>\n          </div>\n          <button class=\"btn btn-primary btn-block\" (click)=\"showCountry(country.name)\">More Info</button>\n        </div>\n      </div>\n    </div>\n\n    <!-- Pagination Controls -->\n    <div class=\"text-center my-3\">\n      <pagination-controls class=\"my-pagination\" [directionLinks]=\"false\" (pageChange)=\"_pageChange($event)\"></pagination-controls>\n    </div>\n\n  </div>\n\n</div>\n"
+module.exports = "<app-loading-screen *ngIf=\"searching\"></app-loading-screen>\n\n<div class=\"d-flex flex-column\">\n\n  <header class=\"d-flex flex-column\">\n\n    <img src=\"assets/images/{{coverImage}}.jpg\" *ngIf=\"coverImage\">\n    <div class=\"title d-flex align-items-center justify-content-center\">\n      <div *ngIf=\"type === 'region'\">{{ value }}</div>\n      <div *ngIf=\"type === 'currency'\">Currency: {{ value }}</div>\n      <div *ngIf=\"type === 'lang'\">Language: {{ value  }}</div>\n    </div>\n\n    <!-- Filtering Textboxes -->\n    <div class=\"filters d-flex flex-column flex-md-row justify-content-around px-3 py-2 w-100\">\n      <input type=\"text\" class=\"textbox\" [class.active]=\"nameFilter\" placeholder=\"Search Name\" [(ngModel)]=\"nameFilter\">\n      <input type=\"text\" class=\"textbox\" [class.active]=\"regionFilter\" placeholder=\"Search Region\" [(ngModel)]=\"regionFilter\" *ngIf=\"type !== 'region'\">\n      <input type=\"text\" class=\"textbox\" [class.active]=\"langFilter\" placeholder=\"Search Language\" [(ngModel)]=\"langFilter\" *ngIf=\"type !== 'lang'\">\n      <input type=\"text\" class=\"textbox\" [class.active]=\"currencyFilter\" placeholder=\"Search Currency\" [(ngModel)]=\"currencyFilter\" *ngIf=\"type !== 'currency'\">\n    </div>\n\n  </header>\n\n  <div class=\"container-fluid pt-3 list-container\">\n\n    <!-- Number of Countries found -->\n    <div class=\"text-center text-muted\" *ngIf=\"!searching && !nameFilter && !langFilter && !currencyFilter\">\n      {{ list.length }} countr{{ list.length > 1 ? 'ies' : 'y' }} found.\n    </div>\n\n    <!-- Country List -->\n    <div class=\"row\">\n      <div class=\"col-12 col-sm-6 col-md-4 col-lg-3\" *ngFor=\"let country of list | regionFilter: regionFilter | nameFilter: nameFilter | langFilter: langFilter | currencyFilter: currencyFilter | paginate: { itemsPerPage: 12, currentPage: pageNumber }\">\n        <div class=\"card mx-auto my-3 shadow border-0\" [@cardAnim]=\"cardState\">\n          <img src=\"{{ country.flag }}\" alt=\"{{ country.name }}\" class=\"card-img-top\">\n          <div class=\"card-body\">\n            <div class=\"card-title\" [innerHtml]=\"country.name | makeBolder: nameFilter\"></div>\n            <div class=\"card-text\">\n              <div class=\"pair\" *ngIf=\"type !== 'region'\">\n                <div class=\"key\">Region</div>\n                <div class=\"value\">{{ country.region }}</div>\n              </div>\n              <div class=\"pair\" *ngIf=\"country.capital\">\n                <div class=\"key\">Capital</div>\n                <div class=\"value\">{{ country.capital }}</div>\n              </div>\n              <div class=\"pair\" *ngIf=\"country.subregion\">\n                <div class=\"key\">Subregion</div>\n                <div class=\"value\">{{ country.subregion }}</div>\n              </div>\n              <div class=\"pair\">\n                <div class=\"key\">Timezone{{ country.timezones.length > 1 ? 's' : '' }}</div>\n                <div class=\"value\">{{ country.timezones.join(', ') }}</div>\n              </div>\n              <div class=\"pair\">\n                <div class=\"key\">Currenc{{ country.currencies.length > 1 ? 'ies' : 'y' }}</div>\n                <div class=\"value\">\n                  <span *ngFor=\"let currency of country.currencies; let last = last\"><a routerLink=\"/countries/currency/{{currency.code}}\" class=\"card-link\" [innerHtml]=\"currency.name | makeBolder: currencyFilter\"></a>{{ last ? '' : ', ' }}</span>\n                </div>\n              </div>\n              <div class=\"pair\">\n                <div class=\"key\">Language{{ country.languages.length > 1 ? 's' : '' }}</div>\n                <div class=\"value\">\n                  <span *ngFor=\"let language of country.languages; let last = last\"><a routerLink=\"/countries/lang/{{language.code}}\" class=\"card-link\" [innerHtml]=\"language.name | makeBolder: langFilter\"></a>{{ last ? '' : ', ' }}</span>\n                </div>\n              </div>\n            </div>\n          </div>\n          <button class=\"btn btn-primary btn-block\" (click)=\"showCountry(country.name)\">More Info</button>\n        </div>\n      </div>\n    </div>\n\n    <!-- Pagination Controls -->\n    <div class=\"text-center my-3\">\n      <pagination-controls class=\"my-pagination\" [directionLinks]=\"false\" (pageChange)=\"_pageChange($event)\"></pagination-controls>\n    </div>\n\n  </div>\n\n</div>\n"
 
 /***/ }),
 
@@ -218,6 +218,7 @@ var CountriesComponent = /** @class */ (function () {
         this.searching = true;
         this.pageNumber = 1;
         this.nameFilter = '';
+        this.regionFilter = '';
         this.langFilter = '';
         this.currencyFilter = '';
         this.scrollWindow = null;
@@ -313,12 +314,14 @@ var CountriesComponent = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__pipes_currency_filter_pipe__ = __webpack_require__("./src/app/country/pipes/currency-filter.pipe.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__pipes_make_bolder_pipe__ = __webpack_require__("./src/app/country/pipes/make-bolder.pipe.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__shared_shared_module__ = __webpack_require__("./src/app/shared/shared.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__pipes_region_filter_pipe__ = __webpack_require__("./src/app/country/pipes/region-filter.pipe.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -343,7 +346,8 @@ var CountryModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_8__pipes_name_filter_pipe__["a" /* NameFilterPipe */],
                 __WEBPACK_IMPORTED_MODULE_9__pipes_lang_filter_pipe__["a" /* LangFilterPipe */],
                 __WEBPACK_IMPORTED_MODULE_10__pipes_currency_filter_pipe__["a" /* CurrencyFilterPipe */],
-                __WEBPACK_IMPORTED_MODULE_11__pipes_make_bolder_pipe__["a" /* MakeBolderPipe */]
+                __WEBPACK_IMPORTED_MODULE_11__pipes_make_bolder_pipe__["a" /* MakeBolderPipe */],
+                __WEBPACK_IMPORTED_MODULE_13__pipes_region_filter_pipe__["a" /* RegionFilterPipe */]
             ],
             imports: [
                 __WEBPACK_IMPORTED_MODULE_1__angular_common__["b" /* CommonModule */],
@@ -701,10 +705,48 @@ var NameFilterPipe = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "./src/app/country/pipes/region-filter.pipe.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RegionFilterPipe; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+var RegionFilterPipe = /** @class */ (function () {
+    function RegionFilterPipe() {
+    }
+    RegionFilterPipe.prototype.transform = function (list, value) {
+        if (!list) {
+            return null;
+        }
+        if (!value) {
+            return list;
+        }
+        value = value.toLowerCase();
+        return list.filter(function (country) { return country.region.toLowerCase().includes(value); });
+    };
+    RegionFilterPipe = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["T" /* Pipe */])({
+            name: 'regionFilter'
+        })
+    ], RegionFilterPipe);
+    return RegionFilterPipe;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/app/home/home.component.css":
 /***/ (function(module, exports) {
 
-module.exports = "\r\n#mainContainer {\r\n  width: 100vw;\r\n  height: 100vh;\r\n  overflow: hidden;\r\n  position: relative;\r\n}\r\n\r\n.main-area {\r\n  position: absolute;\r\n  width: 100%;\r\n  height: 100%;\r\n  top: 0;\r\n  left: 0;\r\n}\r\n\r\n.image {\r\n  width: 100%;\r\n  height: 100%;\r\n}\r\n\r\n.image img {\r\n  width: 100%;\r\n  height: 100%;\r\n  -o-object-fit: cover;\r\n     object-fit: cover;\r\n}\r\n\r\n.image::after {\r\n  content: '';\r\n  position: absolute;\r\n  top: 0;\r\n  left: 0;\r\n  width: 100%;\r\n  height: 100%;\r\n  background: rgba(0, 0, 0, 0.2);\r\n  z-index: 1;\r\n}\r\n\r\n.title {\r\n  font-size: 0.8rem;\r\n  font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\r\n  font-weight: 700;\r\n  color: hsla(0, 0%, 100%, 0.5);\r\n  text-transform: uppercase;\r\n  letter-spacing: 0.15rem;\r\n}\r\n\r\n.dropdown {\r\n  position: relative;\r\n  font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\r\n  font-weight: 300;\r\n  font-size: 2rem;\r\n  width: 16rem;\r\n  cursor: pointer;\r\n}\r\n\r\n.dropdown .placeholder, .dropdown .list .item {\r\n  padding: 0.75rem;\r\n  text-align: center;\r\n  color: hsl(0, 0%, 100%);\r\n  border-bottom: 2px solid white;\r\n  text-transform: uppercase;\r\n  letter-spacing: 0.15rem;\r\n  -webkit-transition: all .1s ease-in-out;\r\n  transition: all .1s ease-in-out;\r\n}\r\n\r\n.dropdown .placeholder:hover {\r\n  background: white;\r\n  color: hsl(0, 47%, 13%);\r\n}\r\n\r\n.dropdown .list .item {\r\n  background: white;\r\n  color: hsl(0, 47%, 13%);\r\n  border-bottom: 1px solid hsl(0, 47%, 13%);\r\n}\r\n\r\n.dropdown .list .item:hover {\r\n  background: hsl(0, 47%, 13%);\r\n  color: white;\r\n}\r\n\r\n.dropdown .list {\r\n  position: absolute;\r\n  width: inherit;\r\n  -webkit-transform: translateY(-50%);\r\n          transform: translateY(-50%);\r\n}\r\n\r\n.dropdown .list .item {\r\n  border-bottom: 1px solid hsl(0, 47%, 13%);\r\n}\r\n\r\n.dropdown .list .item:last-child {\r\n  border-bottom: none;\r\n}"
+module.exports = "\r\n#mainContainer {\r\n  width: 100vw;\r\n  height: 100vh;\r\n  overflow: hidden;\r\n  position: relative;\r\n}\r\n\r\n.main-area {\r\n  position: absolute;\r\n  width: 100%;\r\n  height: 100%;\r\n  top: 0;\r\n  left: 0;\r\n}\r\n\r\n.image {\r\n  width: 100%;\r\n  height: 100%;\r\n}\r\n\r\n.image img {\r\n  width: 100%;\r\n  height: 100%;\r\n  -o-object-fit: cover;\r\n     object-fit: cover;\r\n}\r\n\r\n.image::after {\r\n  content: '';\r\n  position: absolute;\r\n  top: 0;\r\n  left: 0;\r\n  width: 100%;\r\n  height: 100%;\r\n  background: rgba(0, 0, 0, 0.12);\r\n  z-index: 1;\r\n}\r\n\r\n.title {\r\n  font-size: 0.8rem;\r\n  font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\r\n  font-weight: 700;\r\n  color: hsla(0, 0%, 100%, 0.5);\r\n  text-transform: uppercase;\r\n  letter-spacing: 0.15rem;\r\n}\r\n\r\n.dropdown {\r\n  position: relative;\r\n  font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\r\n  font-weight: 300;\r\n  font-size: 2rem;\r\n  width: 16rem;\r\n  cursor: pointer;\r\n}\r\n\r\n.dropdown .placeholder, .dropdown .list .item {\r\n  padding: 0.75rem;\r\n  text-align: center;\r\n  color: hsl(0, 0%, 100%);\r\n  border-bottom: 2px solid white;\r\n  text-transform: uppercase;\r\n  letter-spacing: 0.15rem;\r\n  -webkit-transition: all .1s ease-in-out;\r\n  transition: all .1s ease-in-out;\r\n}\r\n\r\n.dropdown .placeholder:hover {\r\n  background: white;\r\n  color: hsl(0, 47%, 13%);\r\n}\r\n\r\n.dropdown .list .item {\r\n  background: white;\r\n  color: hsl(0, 47%, 13%);\r\n  border-bottom: 1px solid hsl(0, 47%, 13%);\r\n}\r\n\r\n.dropdown .list .item:hover {\r\n  background: hsl(0, 47%, 13%);\r\n  color: white;\r\n}\r\n\r\n.dropdown .list {\r\n  position: absolute;\r\n  width: inherit;\r\n  -webkit-transform: translateY(-50%);\r\n          transform: translateY(-50%);\r\n}\r\n\r\n.dropdown .list .item {\r\n  border-bottom: 1px solid hsl(0, 47%, 13%);\r\n}\r\n\r\n.dropdown .list .item:last-child {\r\n  border-bottom: none;\r\n}"
 
 /***/ }),
 
